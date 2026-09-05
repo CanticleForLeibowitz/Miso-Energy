@@ -3,12 +3,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from Read_Data.open_csv import read_data
 
+data = read_data()
+df_data_queue_data , df_data_sheet1 = data.read_file()
 
-queue_data = pd.read_csv('csv data\GI_Interactive_Queue.csv')
-sheet1_data = pd.read_csv("csv data\sheet1.csv")
-df_data_queue_data = pd.DataFrame(queue_data)
-df_data_sheet1= pd.DataFrame(sheet1_data)
 print(df_data_queue_data)
 df_data_xtern_data_filled = df_data_sheet1.fillna(0)
 print(df_data_xtern_data_filled)
