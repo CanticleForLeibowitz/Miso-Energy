@@ -15,4 +15,11 @@ class manipulate:
         done = self.data_set1[self.data_set1['Request Status'] == 'Done']
         withdrawn = self.data_set1[self.data_set1['Request Status'] == 'Withdrawn'] 
         legacy = self.data_set1[self.data_set1['Request Status'] == 'LEGACY: Done']
-        print(active)
+        print("Active Records:")
+        print(len(active))
+        print("Done Records:")
+        print(len(done))
+        print("Withdrawn Records:")
+        print(len(withdrawn))
+        print("Legacy Done")
+        print(len(legacy))
