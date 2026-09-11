@@ -1,6 +1,5 @@
-import numpy as np
 import pandas as pd
-
+import numpy as np
 class manipulate:
     def __init__(self, data_set1, data_set2):
         self.data_set1 = data_set1
@@ -8,7 +7,7 @@ class manipulate:
 
     def drop_columns(self):
         self.data_set1.drop(['Negotiated In Service Date','Withdrawn Date','POI Name','Generating Facility'], axis=1, inplace=True)
-        self.data_set2.drop(columns=['INCREMENTAL_LOAD_MW','STATE']).apply(pd.to_numeric, errors='coerce')
+        
 
     def filter_data(self):
         active = self.data_set1[self.data_set1['Request Status'] == 'Active']
@@ -23,3 +22,34 @@ class manipulate:
         print(len(withdrawn))
         print("Legacy Done")
         print(len(legacy))
+
+    def extract_dates(self):
+        date_cols = [
+            "q_date",
+            "prop_date",
+            "on_date",
+            "wd_date",
+            "ia_date"
+        ]
+
+        for col in date_cols:
+             self.data_set2[col] = pd.to_datetime(self.data_set2[col], errors="coerce")
+
+        self.data_set2["planned_years"] = (self.data_set2["prop_date"] - self.data_set2["q_date"]).dt.days / 365.25
+        self.data_set2 = self.data_set2.fillna(0).astype(str)
+        return self.data_set2
+
+    def IA_phase_clean(self):
+        self.data_set2["IA_phase_clean"].value_counts(dropna=False)
+
+    def log_mw(self):
+        mw_cols = ["mw_1", "mw_2", "mw_3"]
+        
+        for col in mw_cols:
+            self.data_set2[col] = pd.to_numeric(self.data_set2[col], errors="coerce").fillna(0)
+
+        self.data_set2["total_mw"] = self.data_set2[mw_cols].sum(axis=1)
+        self.data_set2["log_mw"] = np.log1p(self.data_set2["total_mw"])
+
+
+
