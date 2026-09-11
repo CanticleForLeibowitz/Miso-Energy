@@ -16,4 +16,4 @@ Model = model(df_data_queue_data,large_load_data)
 man_data.log_mw()
 preprocessor = Model.model_feature_selection()
 
-Model.model_predict(preprocessor)
+x, y = Model.model_predict(preprocessor)
